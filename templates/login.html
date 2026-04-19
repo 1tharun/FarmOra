@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Farmora — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest:#1c3a28; --forest-mid:#2a5240;
+      --parchment:#f5efe0; --parchment-dk:#ede3cc;
+      --gold:#c8963c; --gold-lt:#e8b860; --gold-pale:#f5e4b8;
+      --cream:#faf6ec; --ink:#1a1510; --ink-mid:#4a3f32; --ink-lt:#7a6e60;
+    }
+    body {
+      font-family: 'Jost', sans-serif; min-height: 100vh;
+      background: var(--cream); display: flex; align-items: center; justify-content: center;
+      background-image:
+        radial-gradient(ellipse 60% 60% at 15% 50%, rgba(28,58,40,0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 85% 50%, rgba(200,150,60,0.05) 0%, transparent 55%);
+    }
+    .login-wrap { width: 100%; max-width: 460px; padding: 1.5rem; }
+
+    .brand-area { text-align: center; margin-bottom: 2.2rem; }
+    .brand-area .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 700; color: var(--forest);
+      letter-spacing: 1px; line-height: 1;
+    }
+    .brand-area .logo em { color: var(--gold); font-style: italic; }
+    .brand-area .tagline {
+      color: var(--ink-lt); font-size: 0.85rem; margin-top: 6px; letter-spacing: 0.3px;
+    }
+    .ornament { color: var(--gold); letter-spacing: 8px; font-size: 0.8rem; opacity: 0.5; margin: 8px 0 0; }
+
+    .login-card {
+      background: var(--parchment);
+      border: 1.5px solid var(--parchment-dk);
+      border-radius: 8px;
+      padding: 2.8rem 2.8rem 2.4rem;
+      box-shadow: 0 8px 40px rgba(28,58,40,0.10), 0 1px 3px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--forest), var(--gold), var(--forest));
+      border-radius: 8px 8px 0 0;
+    }
+
+    .card-eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--forest); margin-bottom: 0.3rem;
+    }
+    .card-sub { color: var(--ink-lt); font-size: 0.88rem; margin-bottom: 1.8rem; }
+
+    .alert-error {
+      background: #fee2e2; color: #991b1b;
+      border-left: 3px solid #b91c1c;
+      padding: 11px 15px; border-radius: 4px;
+      font-size: 0.875rem; margin-bottom: 1.3rem;
+    }
+    .field-group { margin-bottom: 1.2rem; }
+    .field-label {
+      display: block; font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--ink-mid); margin-bottom: 6px;
+    }
+    .field-input {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid var(--parchment-dk); border-radius: 5px;
+      font-family: 'Jost', sans-serif; font-size: 0.95rem;
+      color: var(--ink); background: #fff; outline: none; transition: all 0.2s;
+    }
+    .field-input:focus {
+      border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,150,60,0.12);
+    }
+    .btn-submit {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-mid) 100%);
+      color: var(--gold-lt);
+      border: 1px solid var(--forest-mid); border-radius: 5px;
+      font-family: 'Jost', sans-serif; font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; margin-top: 0.3rem;
+    }
+    .btn-submit:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 5px 16px rgba(28,58,40,0.25); }
+
+    .sep { text-align: center; color: var(--ink-lt); font-size: 0.82rem; margin: 1.3rem 0; position: relative; }
+    .sep::before, .sep::after {
+      content: ''; position: absolute; top: 50%; width: 40%;
+      height: 1px; background: var(--parchment-dk);
+    }
+    .sep::before { left: 0; }
+    .sep::after { right: 0; }
+
+    .register-link { text-align: center; font-size: 0.88rem; color: var(--ink-lt); }
+    .register-link a { color: var(--gold); font-weight: 600; text-decoration: none; }
+    .register-link a:hover { text-decoration: underline; }
+
+    .role-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.3rem; }
+    .role-tile {
+      background: var(--cream); border: 1px solid var(--parchment-dk);
+      border-radius: 5px; padding: 10px; text-align: center; font-size: 0.8rem; color: var(--ink-mid);
+    }
+    .role-tile .ti { font-size: 1.3rem; display: block; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="brand-area">
+      <div class="logo">Farm<em>ora</em></div>
+      <p class="tagline">Fresh from the field to your table</p>
+      <div class="ornament">— ✦ —</div>
+    </div>
+
+    <div class="login-card">
+      <div class="card-eyebrow">Welcome back</div>
+      <h2 class="card-title">Sign In</h2>
+      <p class="card-sub">Enter your credentials to continue</p>
+
+      {% if error %}
+        <div class="alert-error">⚠ {{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/login/">
+        {% csrf_token %}
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" name="email" placeholder="you@example.com" required autofocus />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <input class="field-input" type="password" name="password" placeholder="Your password" required />
+        </div>
+        <button type="submit" class="btn-submit">Sign In →</button>
+      </form>
+
+      <div class="sep">or</div>
+      <p class="register-link">New to Farmora? <a href="/">Create an account</a></p>
+
+      <div class="role-tiles">
+        <div class="role-tile"><span class="ti">🌾</span><strong>Farmer?</strong><br>Manage your store</div>
+        <div class="role-tile"><span class="ti">🛍</span><strong>Customer?</strong><br>Shop fresh produce</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

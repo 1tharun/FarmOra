@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Pending Orders{% endblock %}
+{% block content %}
+<style>
+  .wrap { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .page-head { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--parchment-dk); }
+  .page-head .eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+  .page-head h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--forest); }
+  .page-head p { color: var(--ink-lt); font-size: 0.88rem; margin-top: 4px; }
+
+  .count-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-pale); color: var(--ink-mid);
+    border: 1px solid var(--gold); padding: 6px 16px;
+    border-radius: 4px; font-size: 0.82rem; font-weight: 600; margin-bottom: 1.8rem;
+  }
+
+  .order-card {
+    background: var(--parchment); border: 1.5px solid var(--parchment-dk);
+    border-radius: 8px; margin-bottom: 1rem; overflow: hidden;
+    box-shadow: var(--shadow-sm); transition: box-shadow 0.2s;
+  }
+  .order-card:hover { box-shadow: var(--shadow-md); }
+
+  .oc-top { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.4rem; }
+
+  /* FIXED image */
+  .oc-thumb {
+    width: 74px; height: 74px; border-radius: 7px;
+    background: linear-gradient(135deg, var(--sage-pale), var(--gold-pale));
+    overflow: hidden; flex-shrink: 0; position: relative;
+  }
+  .oc-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .oc-thumb .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
+
+  .oc-info { flex: 1; }
+  .oc-product { font-family: 'Cormorant Garamond', serif; font-size: 1.12rem; font-weight: 700; color: var(--forest); }
+  .oc-meta { font-size: 0.82rem; color: var(--ink-lt); margin-top: 2px; }
+  .oc-total { font-size: 1.3rem; font-weight: 700; color: var(--gold); font-family: 'Cormorant Garamond', serif; margin-left: auto; }
+
+  .oc-time { padding: 0 1.4rem 0.5rem; font-size: 0.76rem; color: var(--ink-lt); }
+  .oc-actions {
+    display: flex; gap: 10px; padding: 0.8rem 1.4rem 1.2rem;
+    border-top: 1px solid var(--parchment-dk); background: var(--cream);
+  }
+  .btn-accept {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 9px 22px; background: var(--forest); color: var(--gold-lt);
+    border-radius: 4px; text-decoration: none;
+    font-weight: 600; font-size: 0.88rem; transition: all 0.2s;
+    border: 1px solid var(--forest-mid); letter-spacing: 0.3px;
+  }
+  .btn-accept:hover { background: var(--forest-mid); }
+  .btn-reject {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 9px 22px; background: #fee2e2; color: #991b1b;
+    border-radius: 4px; text-decoration: none;
+    font-weight: 600; font-size: 0.88rem; transition: all 0.2s;
+    border: 1px solid #fca5a5;
+  }
+  .btn-reject:hover { background: #991b1b; color: #fff; border-color: #991b1b; }
+
+  .empty-box { text-align: center; padding: 4rem 2rem; background: var(--parchment); border: 1.5px solid var(--parchment-dk); border-radius: 8px; }
+  .empty-box .ei { font-size: 3.5rem; margin-bottom: 1rem; }
+  .empty-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--ink-mid); margin-bottom: 0.4rem; }
+  .empty-box p { color: var(--ink-lt); margin-bottom: 1.5rem; }
+  .empty-box a { display: inline-flex; gap: 6px; padding: 11px 22px; background: var(--forest); color: var(--gold-lt); border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+</style>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Farmer Portal</div>
+    <h1>Pending Orders</h1>
+    <p>Review and respond to new customer orders</p>
+  </div>
+
+  {% if orders %}
+    <div class="count-pill">⏳ {{ pending_count }} order{{ pending_count|pluralize }} awaiting response</div>
+
+    {% for order in orders %}
+    <div class="order-card">
+      <div class="oc-top">
+        <div class="oc-thumb">
+          {% if order.product.image %}
+            <img src="{{ order.product.image }}" alt="{{ order.product.name }}"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="fallback" style="display:none;">🥬</div>
+          {% else %}
+            <div class="fallback">🥬</div>
+          {% endif %}
+        </div>
+        <div class="oc-info">
+          <div class="oc-product">{{ order.product.name }}</div>
+          <div class="oc-meta">Order #{{ order.id }} · {{ order.quantity }} kg</div>
+        </div>
+        <div class="oc-total">₹{{ order.total }}</div>
+      </div>
+      <div class="oc-time">Received: {{ order.created_at|date:"d M Y, g:i A" }}</div>
+      <div class="oc-actions">
+        <a href="/accept-order/{{ order.id }}/" class="btn-accept">✓ Accept</a>
+        <a href="/reject-order/{{ order.id }}/" class="btn-reject">✕ Reject</a>
+      </div>
+    </div>
+    {% endfor %}
+
+  {% else %}
+    <div class="empty-box">
+      <div class="ei">🎉</div>
+      <h3>All clear!</h3>
+      <p>No pending orders right now. Check back later.</p>
+      <a href="/farmer-dashboard/">← Back to Dashboard</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

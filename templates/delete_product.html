@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Delete Product{% endblock %}
+{% block content %}
+<style>
+  .wrap { max-width: 480px; margin: 4rem auto; padding: 0 1.5rem; }
+  .del-card {
+    background: var(--parchment); border: 1.5px solid #fca5a5;
+    border-radius: 8px; padding: 2.5rem 2.5rem 2rem;
+    box-shadow: var(--shadow-md); text-align: center;
+  }
+  .del-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .del-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #991b1b; margin-bottom: 0.5rem; }
+  .del-sub { color: var(--ink-mid); font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.6; }
+  .prod-name { font-weight: 700; color: var(--forest); }
+  .btn-row { display: flex; gap: 10px; justify-content: center; }
+  .btn-confirm {
+    padding: 12px 28px; background: #991b1b; color: #fff;
+    border: none; border-radius: 5px; font-family: 'Jost', sans-serif;
+    font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-confirm:hover { background: #7f1d1d; }
+  .btn-back {
+    padding: 12px 22px; background: transparent; color: var(--ink-mid);
+    border: 1.5px solid var(--parchment-dk); border-radius: 5px;
+    font-family: 'Jost', sans-serif; font-size: 0.92rem; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--ink-mid); }
+</style>
+
+<div class="wrap">
+  <div class="del-card">
+    <div class="del-icon">⚠️</div>
+    <h2 class="del-title">Delete Product?</h2>
+    <p class="del-sub">
+      You are about to permanently delete<br>
+      <span class="prod-name">"{{ product.name }}"</span>.<br>
+      This action cannot be undone.
+    </p>
+    <div class="btn-row">
+      <form method="POST" action="/delete-product/{{ product.id }}/">
+        {% csrf_token %}
+        <button type="submit" class="btn-confirm">Yes, Delete</button>
+      </form>
+      <a href="/farmer-dashboard/" class="btn-back">Cancel</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

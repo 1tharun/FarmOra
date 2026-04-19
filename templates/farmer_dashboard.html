@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% block title %}Farmer Dashboard{% endblock %}
+{% block content %}
+<style>
+  .dash { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  /* Page header */
+  .dash-head { margin-bottom: 2rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--parchment-dk); }
+  .dash-head .eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+  .dash-head h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 700; color: var(--forest); }
+  .dash-head p { color: var(--ink-lt); font-size: 0.9rem; margin-top: 4px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+  .stat {
+    background: var(--parchment); border: 1.5px solid var(--parchment-dk);
+    border-radius: 7px; padding: 1.3rem 1.4rem;
+    box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+  }
+  .stat::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--forest); border-radius: 7px 0 0 7px; }
+  .stat.gold::before { background: var(--gold); }
+  .stat.mahogany::before { background: var(--mahogany); }
+  .stat-lbl { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-lt); margin-bottom: 8px; }
+  .stat-val { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--forest); line-height: 1; }
+  .stat-icon { position: absolute; right: 1rem; top: 1rem; font-size: 1.6rem; opacity: 0.25; }
+
+  /* Section header */
+  .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--parchment-dk); }
+  .sec-head h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--forest); }
+
+  /* Products grid — with CRUD */
+  .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.2rem; margin-bottom: 3rem; }
+  .prod-card {
+    background: var(--parchment); border: 1.5px solid var(--parchment-dk);
+    border-radius: 7px; overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .prod-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+  /* FIXED image in dashboard cards */
+  .prod-card-img {
+    width: 100%; height: 130px;
+    background: linear-gradient(135deg, var(--sage-pale), var(--gold-pale));
+    overflow: hidden; position: relative;
+  }
+  .prod-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  .prod-card-img .fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+  }
+
+  .prod-card-body { padding: 0.85rem 1rem; }
+  .prod-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); }
+  .prod-card-telugu { font-size: 0.75rem; color: var(--ink-lt); }
+  .prod-card-price { font-weight: 700; color: var(--gold); font-size: 1rem; margin: 5px 0 10px; }
+  .prod-card-actions { display: flex; gap: 6px; }
+  .act-btn {
+    flex: 1; padding: 6px; border-radius: 4px;
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 600;
+    text-align: center; text-decoration: none; border: 1px solid; cursor: pointer; transition: all 0.18s;
+  }
+  .act-edit { background: var(--gold-pale); color: var(--forest); border-color: var(--gold); }
+  .act-edit:hover { background: var(--gold); }
+  .act-del { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+  .act-del:hover { background: #991b1b; color: #fff; }
+
+  /* Table */
+  .table-wrap { background: var(--parchment); border: 1.5px solid var(--parchment-dk); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm); }
+  .empty-box { text-align: center; padding: 2.5rem; color: var(--ink-lt); }
+  .empty-box .ei { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .empty-box a { color: var(--gold); font-weight: 600; text-decoration: none; }
+</style>
+
+<div class="dash">
+  <div class="dash-head">
+    <div class="eyebrow">Farmer Portal</div>
+    <h1>Your Dashboard</h1>
+    <p>Manage your products, track orders and earnings</p>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-icon">📦</div>
+      <div class="stat-lbl">Total Orders</div>
+      <div class="stat-val">{{ total_orders }}</div>
+    </div>
+    <div class="stat gold">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-lbl">Pending</div>
+      <div class="stat-val">{{ pending_count }}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">₹</div>
+      <div class="stat-lbl">Earnings</div>
+      <div class="stat-val">₹{{ total_earnings }}</div>
+    </div>
+    <div class="stat mahogany">
+      <div class="stat-icon">🌿</div>
+      <div class="stat-lbl">Products</div>
+      <div class="stat-val">{{ products|length }}</div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="sec-head">
+    <h2>My Products</h2>
+    <a href="/add-product/" class="btn btn-gold btn-sm">+ Add Product</a>
+  </div>
+
+  {% if products %}
+  <div class="prod-grid">
+    {% for product in products %}
+    <div class="prod-card">
+      <div class="prod-card-img">
+        {% if product.image %}
+          <img src="{{ product.image }}" alt="{{ product.name }}"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="fallback" style="display:none;">🥬</div>
+        {% else %}
+          <div class="fallback">🥬</div>
+        {% endif %}
+      </div>
+      <div class="prod-card-body">
+        <div class="prod-card-name">{{ product.name }}</div>
+        {% if product.telugu_name %}<div class="prod-card-telugu">{{ product.telugu_name }}</div>{% endif %}
+        <div class="prod-card-price">₹{{ product.price }} / kg</div>
+        <div class="prod-card-actions">
+          <a href="/edit-product/{{ product.id }}/" class="act-btn act-edit">✏ Edit</a>
+          <a href="/delete-product/{{ product.id }}/" class="act-btn act-del">✕ Delete</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-box" style="background:var(--parchment);border:1.5px solid var(--parchment-dk);border-radius:8px;margin-bottom:3rem;">
+    <div class="ei">🌱</div>
+    <p>No products yet. <a href="/add-product/">Add your first listing →</a></p>
+  </div>
+  {% endif %}
+
+  <!-- Orders Section -->
+  <div class="sec-head">
+    <h2>Recent Orders</h2>
+    <a href="/pending-orders/" class="btn btn-outline btn-sm">Pending ({{ pending_count }})</a>
+  </div>
+
+  <div class="table-wrap">
+    {% if orders %}
+    <table>
+      <thead>
+        <tr><th>#</th><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td style="color:var(--ink-lt);font-size:0.8rem;">#{{ order.id }}</td>
+          <td><strong>{{ order.product.name }}</strong></td>
+          <td>{{ order.quantity }} kg</td>
+          <td style="font-weight:700;color:var(--gold);">₹{{ order.total }}</td>
+          <td><span class="badge badge-{{ order.status }}">{{ order.status }}</span></td>
+          <td style="color:var(--ink-lt);font-size:0.8rem;">{{ order.created_at|date:"d M Y" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-box">
+      <div class="ei">📭</div>
+      <p>No orders yet. Share your Farmora store link!</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

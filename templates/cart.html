@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<style>
+  .cart-layout { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.5rem; display: grid; grid-template-columns: 1fr 310px; gap: 1.8rem; align-items: start; }
+  @media (max-width: 700px) { .cart-layout { grid-template-columns: 1fr; } }
+
+  .cart-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--forest); margin-bottom: 0.2rem; }
+  .cart-sub { color: var(--ink-lt); margin-bottom: 1.5rem; font-size: 0.88rem; }
+
+  .cart-items { display: flex; flex-direction: column; gap: 10px; }
+  .cart-item {
+    background: var(--parchment); border: 1.5px solid var(--parchment-dk);
+    border-radius: 7px; padding: 1rem 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
+    box-shadow: var(--shadow-sm); transition: box-shadow 0.2s;
+  }
+  .cart-item:hover { box-shadow: var(--shadow-md); }
+
+  /* FIXED cart item image */
+  .ci-thumb {
+    width: 70px; height: 70px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--sage-pale), var(--gold-pale));
+    overflow: hidden; flex-shrink: 0; position: relative;
+  }
+  .ci-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .ci-thumb .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+
+  .ci-info { flex: 1; }
+  .ci-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); }
+  .ci-price { font-size: 0.82rem; color: var(--ink-lt); }
+  .ci-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .ci-subtotal { font-weight: 700; color: var(--gold); font-size: 1.05rem; }
+
+  .qty-row { display: flex; align-items: center; border: 1.5px solid var(--parchment-dk); border-radius: 4px; overflow: hidden; background: #fff; }
+  .qb { padding: 6px 12px; background: var(--parchment); border: none; cursor: pointer; font-size: 1rem; font-weight: 700; color: var(--forest); text-decoration: none; display: inline-flex; align-items: center; border-right: 1px solid var(--parchment-dk); transition: background 0.15s; }
+  .qb:last-child { border-right: none; border-left: 1px solid var(--parchment-dk); }
+  .qb:hover { background: var(--gold-pale); }
+  .qn { padding: 6px 12px; font-weight: 700; color: var(--forest); min-width: 34px; text-align: center; font-size: 0.9rem; }
+
+  .rm-btn { font-size: 0.72rem; color: #991b1b; text-decoration: none; background: none; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 500; }
+  .rm-btn:hover { text-decoration: underline; }
+
+  /* Summary */
+  .summary {
+    background: var(--parchment); border: 1.5px solid var(--parchment-dk);
+    border-radius: 8px; padding: 1.8rem;
+    box-shadow: var(--shadow-sm); position: sticky; top: 80px;
+  }
+  .summary::before { content: ''; display: block; height: 3px; background: linear-gradient(90deg, var(--forest), var(--gold)); border-radius: 4px; margin-bottom: 1.3rem; }
+  .summary h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--forest); margin-bottom: 1.2rem; }
+  .sum-row { display: flex; justify-content: space-between; margin-bottom: 9px; font-size: 0.87rem; color: var(--ink-mid); }
+  .sum-total { display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--parchment-dk); font-weight: 700; }
+  .sum-total .amt { color: var(--gold); font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; }
+  .btn-place {
+    display: block; width: 100%; margin-top: 1.4rem; padding: 13px;
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-mid) 100%);
+    color: var(--gold-lt); border: none; border-radius: 5px;
+    font-family: 'Jost', sans-serif; font-weight: 600; font-size: 0.92rem;
+    text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-place:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .cont-link { display: block; text-align: center; margin-top: 10px; font-size: 0.82rem; color: var(--ink-lt); text-decoration: none; }
+  .cont-link:hover { color: var(--gold); }
+
+  .empty-cart { text-align: center; padding: 4rem 2rem; background: var(--parchment); border: 1.5px solid var(--parchment-dk); border-radius: 8px; }
+  .empty-cart .ei { font-size: 3.5rem; margin-bottom: 1rem; opacity: 0.5; }
+  .empty-cart h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--ink-mid); margin-bottom: 0.5rem; }
+  .empty-cart p { color: var(--ink-lt); margin-bottom: 1.5rem; }
+  .empty-cart a { display: inline-flex; gap: 6px; padding: 11px 22px; background: var(--forest); color: var(--gold-lt); border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+</style>
+
+<div style="max-width:920px;margin:0 auto;padding:2.5rem 1.5rem 0;">
+  <h1 class="cart-title">Your Cart</h1>
+  <p class="cart-sub">Review items before placing your order</p>
+</div>
+
+{% if items %}
+<div class="cart-layout">
+  <div>
+    <div class="cart-items">
+      {% for item in items %}
+      <div class="cart-item">
+        <div class="ci-thumb">
+          {% if item.product.image %}
+            <img src="{{ item.product.image }}" alt="{{ item.product.name }}"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="fallback" style="display:none;">🥬</div>
+          {% else %}
+            <div class="fallback">🥬</div>
+          {% endif %}
+        </div>
+        <div class="ci-info">
+          <div class="ci-name">{{ item.product.name }}</div>
+          <div class="ci-price">₹{{ item.product.price }} / kg</div>
+        </div>
+        <div class="ci-right">
+          <div class="ci-subtotal">₹{{ item.subtotal }}</div>
+          <div class="qty-row">
+            <a href="/minus/{{ item.product.id }}/" class="qb">−</a>
+            <span class="qn">{{ item.qty }}</span>
+            <a href="/add/{{ item.product.id }}/" class="qb">+</a>
+          </div>
+          <a href="/remove/{{ item.product.id }}/" class="rm-btn">✕ Remove</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="summary">
+    <h3>Order Summary</h3>
+    {% for item in items %}
+    <div class="sum-row">
+      <span>{{ item.product.name }} × {{ item.qty }}</span>
+      <span>₹{{ item.subtotal }}</span>
+    </div>
+    {% endfor %}
+    <div class="sum-total">
+      <span>Total</span>
+      <span class="amt">₹{{ total }}</span>
+    </div>
+    <a href="/place-order/" class="btn-place">Place Order →</a>
+    <a href="/shop/" class="cont-link">← Continue Shopping</a>
+  </div>
+</div>
+{% else %}
+<div style="max-width:480px;margin:2rem auto;padding:0 1.5rem;">
+  <div class="empty-cart">
+    <div class="ei">🛒</div>
+    <h3>Cart is empty</h3>
+    <p>Add some fresh produce to get started.</p>
+    <a href="/shop/">Browse the Market</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

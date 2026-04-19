@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}Shop — Fresh Produce{% endblock %}
+{% block content %}
+<style>
+  /* Hero Banner */
+  .shop-banner {
+    background: linear-gradient(135deg, #0f2218 0%, var(--forest) 50%, #1e4030 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 2.5rem 2.5rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .shop-banner-left h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 700; color: #fff; line-height: 1.1;
+  }
+  .shop-banner-left h1 em { color: var(--gold-lt); font-style: italic; }
+  .shop-banner-left p { color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-top: 4px; }
+
+  /* Search bar */
+  .search-form {
+    display: flex; gap: 0; align-items: center;
+    background: rgba(255,255,255,0.10);
+    border: 1.5px solid rgba(200,150,60,0.4);
+    border-radius: 5px; overflow: hidden;
+    min-width: 280px;
+  }
+  .search-input {
+    flex: 1; padding: 11px 16px;
+    background: transparent; border: none; outline: none;
+    font-family: 'Jost', sans-serif; font-size: 0.9rem;
+    color: #fff;
+  }
+  .search-input::placeholder { color: rgba(255,255,255,0.45); }
+  .search-btn {
+    padding: 11px 18px;
+    background: var(--gold); border: none; cursor: pointer;
+    color: var(--forest); font-weight: 700; font-size: 0.88rem;
+    font-family: 'Jost', sans-serif; letter-spacing: 0.3px;
+    transition: background 0.2s;
+  }
+  .search-btn:hover { background: var(--gold-lt); }
+
+  /* Bar below hero */
+  .shop-meta {
+    background: var(--parchment); border-bottom: 1px solid var(--parchment-dk);
+    padding: 0.9rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .shop-meta-left { font-size: 0.84rem; color: var(--ink-lt); }
+  .shop-meta-left strong { color: var(--forest); }
+  .cart-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold); color: var(--forest);
+    padding: 6px 16px; border-radius: 4px;
+    font-size: 0.84rem; font-weight: 700; text-decoration: none;
+    border: 1px solid var(--gold);
+    transition: all 0.2s;
+  }
+  .cart-pill:hover { background: var(--gold-lt); }
+
+  /* Search results label */
+  .search-label {
+    padding: 0.6rem 2.5rem;
+    font-size: 0.84rem; color: var(--ink-mid);
+    background: var(--gold-pale);
+    border-bottom: 1px solid var(--parchment-dk);
+  }
+  .search-label a { color: var(--forest); font-weight: 600; text-decoration: none; }
+
+  /* Products grid */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.6rem;
+    padding: 2.5rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .product-card {
+    background: var(--parchment);
+    border: 1.5px solid var(--parchment-dk);
+    border-radius: 8px; overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s, box-shadow 0.22s;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+  /* FIXED image container */
+  .prod-img-wrap {
+    width: 100%; height: 190px;
+    background: var(--sage-pale);
+    overflow: hidden; position: relative;
+    flex-shrink: 0;
+  }
+  .prod-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  .prod-img-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4.5rem;
+    background: linear-gradient(135deg, var(--sage-pale), var(--gold-pale));
+  }
+
+  .prod-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex; flex-direction: column; gap: 0; flex: 1;
+  }
+  .prod-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 700; color: var(--forest);
+    margin-bottom: 2px;
+  }
+  .prod-telugu { font-size: 0.8rem; color: var(--ink-lt); margin-bottom: 10px; }
+  .prod-price {
+    font-size: 1.35rem; font-weight: 700; color: var(--gold);
+    margin-bottom: 14px; display: flex; align-items: baseline; gap: 4px;
+  }
+  .prod-price small { font-size: 0.72rem; color: var(--ink-lt); font-weight: 400; }
+
+  /* Qty controls */
+  .qty-row {
+    display: flex; align-items: center;
+    border: 1.5px solid var(--parchment-dk); border-radius: 4px;
+    overflow: hidden; width: fit-content; background: #fff;
+  }
+  .qty-btn {
+    padding: 8px 14px; background: var(--parchment);
+    border: none; cursor: pointer; font-size: 1rem; font-weight: 700;
+    color: var(--forest); text-decoration: none; transition: background 0.15s;
+    display: inline-flex; align-items: center;
+    border-right: 1px solid var(--parchment-dk);
+  }
+  .qty-btn:last-child { border-right: none; border-left: 1px solid var(--parchment-dk); }
+  .qty-btn:hover { background: var(--gold-pale); color: var(--forest); }
+  .qty-num {
+    padding: 8px 14px; font-weight: 700; color: var(--forest);
+    min-width: 36px; text-align: center; font-size: 0.92rem;
+    background: #fff;
+  }
+  .btn-add {
+    display: block; width: 100%; padding: 10px;
+    background: var(--forest); color: var(--gold-lt);
+    border: 1px solid var(--forest-mid); border-radius: 4px;
+    font-family: 'Jost', sans-serif; font-weight: 600; font-size: 0.88rem;
+    text-align: center; text-decoration: none; transition: all 0.2s; cursor: pointer;
+    letter-spacing: 0.3px;
+  }
+  .btn-add:hover { background: var(--forest-mid); }
+
+  /* Floating cart */
+  .cart-float {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 100%);
+    color: var(--forest); border-radius: 5px;
+    padding: 13px 22px; font-weight: 700; font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+    text-decoration: none; display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--gold); z-index: 50; transition: all 0.2s;
+  }
+  .cart-float:hover { filter: brightness(1.06); transform: translateY(-2px); }
+
+  /* Empty */
+  .empty-shop {
+    text-align: center; padding: 5rem 2rem; color: var(--ink-lt);
+    max-width: 500px; margin: 0 auto;
+  }
+  .empty-shop .ei { font-size: 4.5rem; margin-bottom: 1rem; opacity: 0.6; }
+  .empty-shop h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--ink-mid); margin-bottom: 0.4rem; }
+</style>
+
+<div class="shop-banner">
+  <div class="shop-banner-left">
+    <h1>The <em>Farmora</em> Market</h1>
+    <p>Harvested fresh · Delivered to your door</p>
+  </div>
+  <form class="search-form" method="GET" action="/shop/">
+    <input class="search-input" type="text" name="q" placeholder="Search produce, vegetable…" value="{{ q }}" />
+    <button class="search-btn" type="submit">Search</button>
+  </form>
+</div>
+
+<div class="shop-meta">
+  <span class="shop-meta-left">
+    Showing <strong>{{ products|length }}</strong> product{{ products|length|pluralize }}
+    {% if q %} for "<strong>{{ q }}</strong>"{% endif %}
+  </span>
+  {% if cart_count %}
+    <a href="/cart/" class="cart-pill">🛒 Cart ({{ cart_count }})</a>
+  {% endif %}
+</div>
+
+{% if q %}
+<div class="search-label">
+  Results for "{{ q }}" &nbsp;·&nbsp; <a href="/shop/">Clear search ✕</a>
+</div>
+{% endif %}
+
+{% if products %}
+<div class="products-grid">
+  {% for product in products %}
+  <div class="product-card">
+    <div class="prod-img-wrap">
+      {% if product.image %}
+        <img src="{{ product.image }}" alt="{{ product.name }}"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="prod-img-fallback" style="display:none;">🥬</div>
+      {% else %}
+        <div class="prod-img-fallback">🥬</div>
+      {% endif %}
+    </div>
+    <div class="prod-body">
+      <div class="prod-name">{{ product.name }}</div>
+      {% if product.telugu_name %}<div class="prod-telugu">{{ product.telugu_name }}</div>{% endif %}
+      <div class="prod-price">₹{{ product.price }} <small>/ kg</small></div>
+
+      {% with qty=cart|get_item:product.id %}
+      {% if qty > 0 %}
+        <div class="qty-row">
+          <a href="/minus/{{ product.id }}/" class="qty-btn">−</a>
+          <span class="qty-num">{{ qty }}</span>
+          <a href="/add/{{ product.id }}/" class="qty-btn">+</a>
+        </div>
+      {% else %}
+        <a href="/add/{{ product.id }}/" class="btn-add">+ Add to Cart</a>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-shop">
+  <div class="ei">🌱</div>
+  <h3>{% if q %}No results found{% else %}No products yet{% endif %}</h3>
+  <p>{% if q %}Try a different search term.{% else %}Farmers haven't listed any produce yet. Check back soon!{% endif %}</p>
+</div>
+{% endif %}
+
+{% if cart_count %}
+<a href="/cart/" class="cart-float">🛒 View Cart · {{ cart_count }} item{{ cart_count|pluralize }}</a>
+{% endif %}
+{% endblock %}

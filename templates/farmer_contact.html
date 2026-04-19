@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block title %}Farmer Directory — Farmora{% endblock %}
+{% block content %}
+
+<style>
+  .directory-header {
+    background: linear-gradient(135deg, #1c3a28, #2a5240);
+    padding: 3rem 2.5rem 2rem;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+  .directory-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    color: var(--gold-lt);
+    margin-bottom: 0.5rem;
+  }
+  .directory-header p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+  }
+  .directory-body {
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 0 2rem;
+  }
+  .stats-bar {
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dk);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+  }
+  .stats-bar strong {
+    color: var(--forest);
+  }
+  .farmer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .farmer-card {
+    background: #fff;
+    border: 1.5px solid var(--parchment-dk);
+    border-radius: 12px;
+    padding: 1.6rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .farmer-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+  .farmer-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .farmer-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--forest), var(--forest-lt));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+  }
+  .farmer-name-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 0 0 2px;
+  }
+  .farmer-badge {
+    display: inline-block;
+    background: var(--gold-pale);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .farmer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+  }
+  .info-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .info-row a {
+    color: var(--forest-mid);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .info-row a:hover {
+    color: var(--gold);
+    text-decoration: underline;
+  }
+  .product-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e8f5e9;
+    color: #1b5e20;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .farmer-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .btn-call {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--forest), var(--forest-mid));
+    color: var(--gold-lt);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn-call:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+  }
+  .btn-email {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--parchment);
+    color: var(--forest);
+    border: 1.5px solid var(--parchment-dk);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn-email:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    transform: translateY(-1px);
+  }
+  .no-phone {
+    color: var(--ink-lt);
+    font-style: italic;
+    font-size: 0.82rem;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--ink-lt);
+  }
+  .empty-state .emoji { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--forest); margin-bottom: 0.5rem; }
+</style>
+
+<div class="directory-header">
+  <h1>🌾 Farmer Directory</h1>
+  <p>Browse and connect directly with local farmers on Farmora</p>
+</div>
+
+<div class="directory-body">
+  <div class="stats-bar">
+    📋 <strong>{{ farmer_data|length }}</strong> farmer{{ farmer_data|length|pluralize }} registered on Farmora
+  </div>
+
+  {% if farmer_data %}
+  <div class="farmer-grid">
+    {% for item in farmer_data %}
+    <div class="farmer-card">
+      <div class="farmer-card-header">
+        <div class="farmer-avatar">🌾</div>
+        <div class="farmer-name-block">
+          <h3>{{ item.farmer.name }}</h3>
+          <span class="farmer-badge">Verified Farmer</span>
+        </div>
+      </div>
+
+      <div class="farmer-info">
+        <div class="info-row">
+          <span class="info-icon">📧</span>
+          <a href="mailto:{{ item.farmer.email }}">{{ item.farmer.email }}</a>
+        </div>
+        {% if item.farmer.mobile_number %}
+        <div class="info-row">
+          <span class="info-icon">📞</span>
+          <a href="tel:{{ item.farmer.mobile_number }}">{{ item.farmer.mobile_number }}</a>
+        </div>
+        {% else %}
+        <div class="info-row">
+          <span class="info-icon">📞</span>
+          <span class="no-phone">Phone not provided</span>
+        </div>
+        {% endif %}
+        {% if item.farmer.address %}
+        <div class="info-row">
+          <span class="info-icon">📍</span>
+          <span>{{ item.farmer.address }}</span>
+        </div>
+        {% endif %}
+        <div class="info-row">
+          <span class="info-icon">🥬</span>
+          <span class="product-count-badge">{{ item.product_count }} product{{ item.product_count|pluralize }} listed</span>
+        </div>
+      </div>
+
+      <div class="farmer-actions">
+        {% if item.farmer.mobile_number %}
+        <a href="tel:{{ item.farmer.mobile_number }}" class="btn-call">📞 Call Now</a>
+        {% else %}
+        <span class="btn-call" style="opacity:0.5;cursor:not-allowed;">📞 No Phone</span>
+        {% endif %}
+        <a href="mailto:{{ item.farmer.email }}" class="btn-email">✉️ Send Email</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="emoji">🌱</div>
+    <h3>No Farmers Yet</h3>
+    <p>Farmers will appear here once they register on Farmora.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
