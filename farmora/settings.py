@@ -154,3 +154,6 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'tharun2004d@gmail.com')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ffvm hmnr bilw sgac')
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+
+CSRF_TRUSTED_ORIGINS = ['https://farmora-production.up.railway.app']
+CSRF_COOKIE_SECURE = True
