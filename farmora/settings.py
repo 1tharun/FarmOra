@@ -98,6 +98,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ffvm hmnr bilw sgac
 # CSRF — add your Railway domain here
 RAILWAY_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
 CSRF_TRUSTED_ORIGINS = [
-    'https://' + RAILWAY_DOMAIN,
-    'http://' + RAILWAY_DOMAIN,
-] if RAILWAY_DOMAIN else []
+    'https://farmora-production.up.railway.app',
+    'https://*.railway.app',
+]
