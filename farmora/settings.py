@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-893k3$p++j_!n^=l(%ij4
 
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -101,6 +101,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ffvm hmnr bilw sgac
 # CSRF — add your Railway domain here
 RAILWAY_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
 CSRF_TRUSTED_ORIGINS = [
-    'https://farmora-production.up.railway.app',
-    'https://*.railway.app',
+    'https://farmora-production.up.railway.app',    
 ]
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SAMESITE = 'Lax'
