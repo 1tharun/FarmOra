@@ -24,10 +24,13 @@ def register(request):
             address=address,
         )
 
-        send_registration_email(user)
-
-        return redirect('/login/')
-
+        try:
+            send_registration_email(user)
+        except Exception as e:
+            import traceback
+            print(f'[Farmora] Registration email error: {e}')
+            print(traceback.format_exc())
+        return False
     return render(request, 'register.html')
 
 

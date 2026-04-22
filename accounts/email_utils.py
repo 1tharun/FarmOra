@@ -206,8 +206,10 @@ Farmora Team"""
         msg.send()
         return True
     except Exception as e:
-        print(f'[Farmora] Order notification email error: {e}')
-        return False
+      import traceback
+      print(f'[Farmora] Registration email error: {e}')
+      print(traceback.format_exc())
+    return False
 
 
 def send_order_status_email_to_user(order, customer, farmer, status):
