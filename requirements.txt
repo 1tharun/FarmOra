@@ -28,4 +28,3 @@ typing_extensions==4.15.0
 tzdata==2025.2
 uvicorn==0.42.0
 whitenoise==6.11.0
-"# refresh" 
