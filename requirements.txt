@@ -15,6 +15,9 @@ h11==0.16.0
 idna==3.11
 packaging==26.0
 pillow==12.1.1
+psycopg==3.3.3
+psycopg-binary==3.3.3
+psycopg2-binary==2.9.12
 pydantic==2.12.5
 pydantic_core==2.41.5
 PyJWT==2.12.1
