@@ -24,10 +24,7 @@ def register(request):
             address=address,
         )
 
-        try:
-            send_registration_email(user)
-        except Exception as e:
-            print(f'Email failed: {e}')
+        send_registration_email(user)
 
         return redirect('/login/')
 
