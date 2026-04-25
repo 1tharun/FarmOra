@@ -1,1 +1,1 @@
-web: gunicorn farmershut.wsgi
+web: python manage.py migrate && python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'tharun2004d@gmail.com', 'admin123')" && gunicorn farmora.wsgi --workers 3 --timeout 120
