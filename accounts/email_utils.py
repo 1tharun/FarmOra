@@ -111,7 +111,7 @@ def send_registration_email(user):
         msg = EmailMultiAlternatives(
             subject=subject,
             body=plain_text,
-            from_email=settings.EMAIL_HOST_USER,
+           from_email=settings.DEFAULT_FROM_EMAIL,
             to=[user.email],
         )
         msg.attach_alternative(html_content, "text/html")
@@ -199,7 +199,7 @@ Farmora Team"""
         msg = EmailMultiAlternatives(
             subject=subject,
             body=plain_text,
-            from_email=settings.EMAIL_HOST_USER,
+            from_email=settings.DEFAULT_FROM_EMAIL,
             to=[farmer.email],
         )
         msg.attach_alternative(html_content, "text/html")
@@ -324,7 +324,7 @@ Farmora Team"""
         msg = EmailMultiAlternatives(
             subject=subject,
             body=plain_text,
-            from_email=settings.EMAIL_HOST_USER,
+            from_email=settings.DEFAULT_FROM_EMAIL,
             to=[customer.email],
         )
         msg.attach_alternative(html_content, "text/html")
