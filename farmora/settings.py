@@ -56,7 +56,11 @@ WSGI_APPLICATION = 'farmora.wsgi.application'
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=60,
+            conn_health_checks=True,
+        )
     }
 else:
     DATABASES = {
@@ -106,3 +110,20 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'farmora-cache',
+    }
+}
+
+# Session optimization
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+# Database connection pooling
+CONN_MAX_AGE = 60
+
+# Disable unnecessary middleware checks
+SECURE_CONTENT_TYPE_NOSNIFF = False
