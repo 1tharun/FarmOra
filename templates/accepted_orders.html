@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Active Orders{% endblock %}
+{% block content %}
+<style>
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .page-head { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--parchment-dk); }
+  .page-head .eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+  .page-head h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--forest); }
+  .order-card { background: var(--parchment); border: 1.5px solid var(--parchment-dk); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; box-shadow: var(--shadow-sm); }
+  .oc-top { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.4rem; }
+  .oc-thumb { width: 64px; height: 64px; border-radius: 6px; background: linear-gradient(135deg, var(--sage-pale), var(--gold-pale)); overflow: hidden; flex-shrink: 0; }
+  .oc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .oc-thumb .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+  .oc-info { flex: 1; }
+  .oc-product { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--forest); }
+  .oc-meta { font-size: 0.82rem; color: var(--ink-lt); margin-top: 2px; }
+  .oc-total { font-size: 1.2rem; font-weight: 700; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
+  .oc-actions { display: flex; gap: 10px; padding: 0.8rem 1.4rem; border-top: 1px solid var(--parchment-dk); background: var(--cream); flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; }
+  .badge-accepted { background: #dcfce7; color: #166534; }
+  .badge-out_for_delivery { background: #dbeafe; color: #1e40af; }
+  .badge-delivered { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+  .btn-action { display: inline-flex; align-items: center; gap: 5px; padding: 8px 18px; border-radius: 5px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+  .btn-delivery { background: #1e40af; color: #fff; }
+  .btn-delivery:hover { background: #1e3a8a; }
+  .btn-delivered { background: var(--forest); color: var(--gold-lt); }
+  .btn-delivered:hover { filter: brightness(1.1); }
+  .empty-box { text-align: center; padding: 4rem 2rem; background: var(--parchment); border: 1.5px solid var(--parchment-dk); border-radius: 8px; }
+  .empty-box .ei { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--ink-mid); }
+
+  /* Tracking bar */
+  .tracking-bar { display: flex; align-items: center; gap: 0; padding: 0.6rem 1.4rem; background: var(--cream); border-top: 1px solid var(--parchment-dk); }
+  .track-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+  .track-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--parchment-dk); border: 2px solid var(--parchment-dk); margin-bottom: 4px; z-index: 1; }
+  .track-dot.done { background: var(--forest); border-color: var(--forest); }
+  .track-dot.active { background: var(--gold); border-color: var(--gold); }
+  .track-label { font-size: 0.65rem; color: var(--ink-lt); text-align: center; }
+  .track-label.done { color: var(--forest); font-weight: 600; }
+  .track-line { position: absolute; top: 6px; left: 50%; width: 100%; height: 2px; background: var(--parchment-dk); z-index: 0; }
+  .track-line.done { background: var(--forest); }
+  .track-step:last-child .track-line { display: none; }
+</style>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Farmer Portal</div>
+    <h1>🚚 Active Orders</h1>
+    <p>Manage accepted and in-delivery orders</p>
+  </div>
+
+  {% if orders %}
+    {% for order in orders %}
+    <div class="order-card">
+      <div class="oc-top">
+        <div class="oc-thumb">
+          {% if order.product.image %}
+            <img src="{{ order.product.image }}" alt="{{ order.product.name }}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="fallback" style="display:none;">🥬</div>
+          {% else %}
+            <div class="fallback">🥬</div>
+          {% endif %}
+        </div>
+        <div class="oc-info">
+          <div class="oc-product">{{ order.product.name }}</div>
+          <div class="oc-meta">Order #{{ order.id }} · {{ order.quantity }} kg · {{ order.created_at|date:"d M Y" }}</div>
+        </div>
+        <div class="oc-total">₹{{ order.total }}</div>
+      </div>
+
+      <!-- Tracking Bar -->
+      <div class="tracking-bar">
+        <div class="track-step">
+          <div class="track-line done"></div>
+          <div class="track-dot done"></div>
+          <div class="track-label done">Accepted</div>
+        </div>
+        <div class="track-step">
+          <div class="track-line {% if order.status == 'out_for_delivery' or order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="track-dot {% if order.status == 'out_for_delivery' %}active{% elif order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="track-label {% if order.status == 'out_for_delivery' or order.status == 'delivered' %}done{% endif %}">Out for Delivery</div>
+        </div>
+        <div class="track-step">
+          <div class="track-line"></div>
+          <div class="track-dot {% if order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="track-label {% if order.status == 'delivered' %}done{% endif %}">Delivered</div>
+        </div>
+      </div>
+
+      <div class="oc-actions">
+        <span class="status-badge badge-{{ order.status }}">
+          {% if order.status == 'accepted' %}✅ Accepted
+          {% elif order.status == 'out_for_delivery' %}🚚 Out for Delivery
+          {% elif order.status == 'delivered' %}📦 Delivered
+          {% endif %}
+        </span>
+        <div style="display:flex;gap:8px;">
+          {% if order.status == 'accepted' %}
+            <a href="/out-for-delivery/{{ order.id }}/" class="btn-action btn-delivery">🚚 Mark Out for Delivery</a>
+          {% elif order.status == 'out_for_delivery' %}
+            <a href="/mark-delivered/{{ order.id }}/" class="btn-action btn-delivered">✅ Mark as Delivered</a>
+          {% elif order.status == 'delivered' %}
+            <span style="color:var(--forest);font-size:0.85rem;font-weight:600;">🎉 Order Complete</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  {% else %}
+    <div class="empty-box">
+      <div class="ei">📭</div>
+      <h3>No active orders</h3>
+      <p style="color:var(--ink-lt);margin-top:0.5rem;">Accept orders from the Pending Orders page.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

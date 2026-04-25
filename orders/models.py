@@ -1,10 +1,12 @@
 from django.db import models
 
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
+        ('out_for_delivery', 'Out for Delivery'),
         ('delivered', 'Delivered'),
     )
     user_id = models.IntegerField()

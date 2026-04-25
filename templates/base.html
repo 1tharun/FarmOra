@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FarmOra — {% block title %}Fresh From the Field{% endblock %}</title>
+  <title>Farmora — {% block title %}Fresh From the Field{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -174,13 +174,14 @@
 {% if request.session.user_id %}
 <nav>
   <a class="nav-brand" href="/">
-    <span class="leaf">🌿</span> FarmOra
+    <span class="leaf">🌿</span> Farmora
   </a>
   <div class="nav-links">
     {% if request.session.role == 'farmer' %}
       <a href="/farmer-dashboard/">⊞ Dashboard</a>
       <a href="/add-product/">＋ Add Product</a>
       <a href="/pending-orders/">◎ Pending Orders</a>
+      <a href="/accepted-orders/">🚚 Active Orders</a>
     {% else %}
       <a href="/shop/">⊛ Shop</a>
       <a href="/cart/">▣ Cart</a>

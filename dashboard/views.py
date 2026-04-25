@@ -11,14 +11,16 @@ def farmer_dashboard(request):
     products = Product.objects.filter(farmer_id=farmer_id)
     orders = Order.objects.filter(farmer_id=farmer_id).exclude(status="pending")
     total_orders = orders.count()
-    total_earnings = sum(o.total for o in orders if o.status == "accepted")
+    total_earnings = sum(o.total for o in orders if o.status in ["accepted", "out_for_delivery", "delivered"])
     pending_count = Order.objects.filter(farmer_id=farmer_id, status="pending").count()
+    active_count = Order.objects.filter(farmer_id=farmer_id, status__in=["accepted", "out_for_delivery"]).count()
     return render(request, "farmer_dashboard.html", {
         "products": products,
         "orders": orders,
         "total_orders": total_orders,
         "total_earnings": total_earnings,
         "pending_count": pending_count,
+        "active_count": active_count,
     })
 
 
@@ -73,12 +75,22 @@ def pending_orders(request):
     })
 
 
+def accepted_orders(request):
+    if request.session.get("role") != "farmer":
+        return redirect("/login/")
+    farmer_id = request.session.get("user_id")
+    orders = Order.objects.filter(
+        farmer_id=farmer_id,
+        status__in=["accepted", "out_for_delivery", "delivered"]
+    ).order_by("-created_at")
+    return render(request, "accepted_orders.html", {"orders": orders})
+
+
 def farmer_contact_directory(request):
     if not request.session.get('user_id'):
         return redirect('/login/')
     if request.session.get('role') != 'user':
         return redirect('/farmer-dashboard/')
-
     farmers = Account.objects.filter(role='farmer')
     farmer_data = []
     for farmer in farmers:
@@ -87,5 +99,4 @@ def farmer_contact_directory(request):
             'farmer': farmer,
             'product_count': product_count,
         })
-
     return render(request, 'farmer_contact.html', {'farmer_data': farmer_data})

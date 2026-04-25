@@ -185,10 +185,24 @@
   </form>
 </div>
 
+<!-- Filter Bar -->
+<div style="background:var(--parchment);border-bottom:1px solid var(--parchment-dk);padding:0.8rem 2.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+  <form method="GET" action="/shop/" style="display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap;width:100%;">
+    <input type="hidden" name="q" value="{{ q }}">
+    <span style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--ink-mid);">🔍 Filters:</span>
+    <input type="number" name="min_price" value="{{ min_price }}" placeholder="Min ₹" style="width:90px;padding:6px 10px;border:1.5px solid var(--parchment-dk);border-radius:5px;font-family:'Jost',sans-serif;font-size:0.85rem;background:var(--cream);">
+    <input type="number" name="max_price" value="{{ max_price }}" placeholder="Max ₹" style="width:90px;padding:6px 10px;border:1.5px solid var(--parchment-dk);border-radius:5px;font-family:'Jost',sans-serif;font-size:0.85rem;background:var(--cream);">
+    <input type="text" name="location" value="{{ location }}" placeholder="Location (e.g. Hyderabad)" style="width:180px;padding:6px 10px;border:1.5px solid var(--parchment-dk);border-radius:5px;font-family:'Jost',sans-serif;font-size:0.85rem;background:var(--cream);">
+    <button type="submit" style="padding:6px 16px;background:var(--forest);color:var(--gold-lt);border:none;border-radius:5px;font-family:'Jost',sans-serif;font-weight:600;font-size:0.82rem;cursor:pointer;">Apply</button>
+    {% if min_price or max_price or location %}<a href="/shop/?q={{ q }}" style="font-size:0.82rem;color:var(--ink-lt);text-decoration:none;">✕ Clear filters</a>{% endif %}
+  </form>
+</div>
+
 <div class="shop-meta">
   <span class="shop-meta-left">
-    Showing <strong>{{ products|length }}</strong> product{{ products|length|pluralize }}
+    Showing <strong>{{ total_count }}</strong> product{{ total_count|pluralize }}
     {% if q %} for "<strong>{{ q }}</strong>"{% endif %}
+    {% if min_price or max_price or location %} <span style="color:var(--gold);font-weight:600;">· Filtered</span>{% endif %}
   </span>
   {% if cart_count %}
     <a href="/cart/" class="cart-pill">🛒 Cart ({{ cart_count }})</a>
@@ -201,33 +215,39 @@
 </div>
 {% endif %}
 
-{% if products %}
+{% if products_with_data %}
 <div class="products-grid">
-  {% for product in products %}
+  {% for item in products_with_data %}
   <div class="product-card">
+    <a href="/product/{{ item.product.id }}/" style="text-decoration:none;">
     <div class="prod-img-wrap">
-      {% if product.image %}
-        <img src="{{ product.image }}" alt="{{ product.name }}"
+      {% if item.product.image %}
+        <img src="{{ item.product.image }}" alt="{{ item.product.name }}"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
         <div class="prod-img-fallback" style="display:none;">🥬</div>
       {% else %}
         <div class="prod-img-fallback">🥬</div>
       {% endif %}
     </div>
+    </a>
     <div class="prod-body">
-      <div class="prod-name">{{ product.name }}</div>
-      {% if product.telugu_name %}<div class="prod-telugu">{{ product.telugu_name }}</div>{% endif %}
-      <div class="prod-price">₹{{ product.price }} <small>/ kg</small></div>
+      <div class="prod-name">{{ item.product.name }}</div>
+      {% if item.product.telugu_name %}<div class="prod-telugu">{{ item.product.telugu_name }}</div>{% endif %}
+      {% if item.farmer_name %}<div style="font-size:0.75rem;color:var(--ink-lt);margin-bottom:4px;">🌾 {{ item.farmer_name }}</div>{% endif %}
+      {% if item.avg_rating %}
+      <div style="color:#f59e0b;font-size:0.82rem;margin-bottom:4px;">⭐ {{ item.avg_rating }} <span style="color:var(--ink-lt);">({{ item.review_count }})</span></div>
+      {% endif %}
+      <div class="prod-price">₹{{ item.product.price }} <small>/ kg</small></div>
 
-      {% with qty=cart|get_item:product.id %}
+      {% with qty=cart|get_item:item.product.id %}
       {% if qty > 0 %}
         <div class="qty-row">
-          <a href="/minus/{{ product.id }}/" class="qty-btn">−</a>
+          <a href="/minus/{{ item.product.id }}/" class="qty-btn">−</a>
           <span class="qty-num">{{ qty }}</span>
-          <a href="/add/{{ product.id }}/" class="qty-btn">+</a>
+          <a href="/add/{{ item.product.id }}/" class="qty-btn">+</a>
         </div>
       {% else %}
-        <a href="/add/{{ product.id }}/" class="btn-add">+ Add to Cart</a>
+        <a href="/add/{{ item.product.id }}/" class="btn-add">+ Add to Cart</a>
       {% endif %}
       {% endwith %}
     </div>
