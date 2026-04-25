@@ -16,20 +16,21 @@ def register(request):
             return render(request, 'register.html', {'error': 'An account with this email already exists.'})
 
         user = Account.objects.create(
-    name=name,
-    email=email,
-    password=password,
-    role=role,
-    mobile_number=mobile_number,
-    address=address,
-)
+            name=name,
+            email=email,
+            password=password,
+            role=role,
+            mobile_number=mobile_number,
+            address=address,
+        )
 
-    try:
-        send_registration_email(user)
-    except Exception as e:
-        print(f'Email failed: {e}')
+        try:
+            send_registration_email(user)
+        except Exception as e:
+            print(f'Email failed: {e}')
 
         return redirect('/login/')
+
     return render(request, 'register.html')
 
 
