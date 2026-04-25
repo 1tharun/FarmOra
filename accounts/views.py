@@ -1,6 +1,14 @@
 from django.shortcuts import render, redirect
 from .models import Account
 from .email_utils import send_registration_email
+import threading
+
+
+def send_email_async(user):
+    try:
+        send_registration_email(user)
+    except Exception as e:
+        print(f'Email failed: {e}')
 
 
 def register(request):
@@ -24,10 +32,10 @@ def register(request):
             address=address,
         )
 
-        try:
-            send_registration_email(user)
-        except Exception as e:
-            print(f'Email failed: {e}')
+        # Send email in background — doesn't block registration
+        thread = threading.Thread(target=send_email_async, args=(user,))
+        thread.daemon = True
+        thread.start()
 
         return redirect('/login/')
 

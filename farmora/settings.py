@@ -128,3 +128,4 @@ CONN_MAX_AGE = 60
 
 # Disable unnecessary middleware checks
 SECURE_CONTENT_TYPE_NOSNIFF = False
+EMAIL_TIMEOUT = 10
