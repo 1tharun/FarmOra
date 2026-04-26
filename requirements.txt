@@ -2,6 +2,7 @@ annotated-doc==0.0.4
 annotated-types==0.7.0
 anyio==4.13.0
 asgiref==3.11.0
+certifi==2026.4.22
 click==8.3.1
 colorama==0.4.6
 dj-database-url==3.1.2
@@ -20,10 +21,14 @@ psycopg-binary==3.3.3
 pydantic==2.12.5
 pydantic_core==2.41.5
 PyJWT==2.12.1
+python-dateutil==2.9.0.post0
+sib-api-v3-sdk==7.6.0
+six==1.17.0
 sqlparse==0.5.4
 starlette==1.0.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2025.2
+urllib3==2.6.3
 uvicorn==0.42.0
 whitenoise==6.11.0
