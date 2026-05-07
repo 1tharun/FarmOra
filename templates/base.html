@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Farmora — {% block title %}Fresh From the Field{% endblock %}</title>
+  <title>Naagali — {% block title %}Fresh From the Field{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -174,7 +174,7 @@
 {% if request.session.user_id %}
 <nav>
   <a class="nav-brand" href="/">
-    <span class="leaf">🌿</span> Farmora
+    <span class="leaf">🌿</span> Naagali
   </a>
   <div class="nav-links">
     {% if request.session.role == 'farmer' %}
@@ -196,7 +196,7 @@
 {% block content %}{% endblock %}
 
 <footer>
-  <strong>Farmora</strong> &nbsp;·&nbsp; Connecting Farmers &amp; Communities &nbsp;·&nbsp; Fresh, Local, Direct
+  <strong>Naagali</strong> &nbsp;·&nbsp; Connecting Farmers &amp; Communities &nbsp;·&nbsp; Fresh, Local, Direct
 </footer>
 </body>
 </html>

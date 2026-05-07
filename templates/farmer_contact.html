@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Farmer Directory — Farmora{% endblock %}
+{% block title %}Farmer Directory — Naagali{% endblock %}
 {% block content %}
 
 <style>
@@ -193,12 +193,12 @@
 
 <div class="directory-header">
   <h1>🌾 Farmer Directory</h1>
-  <p>Browse and connect directly with local farmers on Farmora</p>
+  <p>Browse and connect directly with local farmers on Naagali</p>
 </div>
 
 <div class="directory-body">
   <div class="stats-bar">
-    📋 <strong>{{ farmer_data|length }}</strong> farmer{{ farmer_data|length|pluralize }} registered on Farmora
+    📋 <strong>{{ farmer_data|length }}</strong> farmer{{ farmer_data|length|pluralize }} registered on Naagali
   </div>
 
   {% if farmer_data %}
@@ -257,7 +257,7 @@
   <div class="empty-state">
     <div class="emoji">🌱</div>
     <h3>No Farmers Yet</h3>
-    <p>Farmers will appear here once they register on Farmora.</p>
+    <p>Farmers will appear here once they register on Naagali.</p>
   </div>
   {% endif %}
 </div>

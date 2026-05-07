@@ -33,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'farmora.urls'
+ROOT_URLCONF = 'Naagali.urls'
 
 TEMPLATES = [
     {
@@ -50,7 +50,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'farmora.wsgi.application'
+WSGI_APPLICATION = 'Naagali.wsgi.application'
 
 # Database
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -98,7 +98,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CSRF — add your Railway domain here
 RAILWAY_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
 CSRF_TRUSTED_ORIGINS = [
-    'https://farmora-production.up.railway.app',    
+    'https://Naagali-production.up.railway.app',    
 ]
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False
@@ -108,7 +108,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'farmora-cache',
+        'LOCATION': 'Naagali-cache',
     }
 }
 

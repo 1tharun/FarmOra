@@ -2,9 +2,9 @@ import os
 import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
 
-SITE_URL = 'https://farmora-production.up.railway.app'
-FROM_EMAIL = 'farmora.farmer@gmail.com'
-FROM_NAME = 'Farmora'
+SITE_URL = 'https://Naagali-production.up.railway.app'
+FROM_EMAIL = 'Naagali.farmer@gmail.com'
+FROM_NAME = 'Naagali'
 
 
 def get_api():
@@ -18,7 +18,7 @@ def send_registration_email(user):
         api = get_api()
 
         if user.role == 'farmer':
-            subject = '🌾 Welcome to Farmora — Farmer Account Created!'
+            subject = '🌾 Welcome to Naagali — Farmer Account Created!'
             html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -28,12 +28,12 @@ def send_registration_email(user):
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
         <tr><td style="background:linear-gradient(135deg,#1c3a28,#2a5240);padding:40px;text-align:center;">
-          <h1 style="color:#e8b860;font-size:36px;margin:0;">🌾 FARMORA</h1>
+          <h1 style="color:#e8b860;font-size:36px;margin:0;">🌾 Naagali</h1>
           <p style="color:rgba(255,255,255,0.75);margin:8px 0 0;font-size:14px;">FARMER PORTAL</p>
         </td></tr>
         <tr><td style="padding:40px;">
           <h2 style="color:#1c3a28;">Welcome, {user.name}! 👋</h2>
-          <p style="color:#4a4a4a;line-height:1.7;">Your farmer account has been successfully created on Farmora.</p>
+          <p style="color:#4a4a4a;line-height:1.7;">Your farmer account has been successfully created on Naagali.</p>
           <table width="100%" style="background:#f0f7f3;border-radius:8px;padding:20px;margin-bottom:24px;">
             <tr><td>
               <p style="margin:0 0 8px;font-weight:600;color:#1c3a28;">📋 Your Account Details:</p>
@@ -55,7 +55,7 @@ def send_registration_email(user):
           </div>
         </td></tr>
         <tr><td style="background:#f0f7f3;padding:20px;text-align:center;">
-          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Farmora · Hyderabad</p>
+          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Naagali · Hyderabad</p>
         </td></tr>
       </table>
     </td></tr>
@@ -64,7 +64,7 @@ def send_registration_email(user):
 </html>
 """
         else:
-            subject = '🛒 Welcome to Farmora — Shop Fresh Produce!'
+            subject = '🛒 Welcome to Naagali — Shop Fresh Produce!'
             html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -74,12 +74,12 @@ def send_registration_email(user):
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;">
         <tr><td style="background:linear-gradient(135deg,#1c3a28,#2a5240);padding:40px;text-align:center;">
-          <h1 style="color:#e8b860;font-size:36px;margin:0;">🛒 FARMORA</h1>
+          <h1 style="color:#e8b860;font-size:36px;margin:0;">🛒 Naagali</h1>
           <p style="color:rgba(255,255,255,0.75);margin:8px 0 0;font-size:14px;">CUSTOMER PORTAL</p>
         </td></tr>
         <tr><td style="padding:40px;">
           <h2 style="color:#1c3a28;">Welcome, {user.name}! 👋</h2>
-          <p style="color:#4a4a4a;line-height:1.7;">Your Farmora account is ready! Browse fresh produce directly from local farmers.</p>
+          <p style="color:#4a4a4a;line-height:1.7;">Your Naagali account is ready! Browse fresh produce directly from local farmers.</p>
           <table width="100%" style="background:#f0f7f3;border-radius:8px;padding:20px;margin-bottom:24px;">
             <tr><td>
               <p style="margin:0 0 8px;font-weight:600;color:#1c3a28;">📋 Your Account Details:</p>
@@ -101,7 +101,7 @@ def send_registration_email(user):
           </div>
         </td></tr>
         <tr><td style="background:#f0f7f3;padding:20px;text-align:center;">
-          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Farmora · Hyderabad</p>
+          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Naagali · Hyderabad</p>
         </td></tr>
       </table>
     </td></tr>
@@ -117,13 +117,13 @@ def send_registration_email(user):
             html_content=html_content,
         )
         api.send_transac_email(send_smtp_email)
-        print(f'[Farmora] Registration email sent to {user.email}')
+        print(f'[Naagali] Registration email sent to {user.email}')
         return True
     except ApiException as e:
-        print(f'[Farmora] Brevo API error: {e}')
+        print(f'[Naagali] Brevo API error: {e}')
         return False
     except Exception as e:
-        print(f'[Farmora] Registration email error: {e}')
+        print(f'[Naagali] Registration email error: {e}')
         return False
 
 
@@ -168,7 +168,7 @@ def send_order_notification_to_farmer(order, farmer, customer):
           </div>
         </td></tr>
         <tr><td style="background:#f0f7f3;padding:20px;text-align:center;">
-          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Farmora · Hyderabad</p>
+          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Naagali · Hyderabad</p>
         </td></tr>
       </table>
     </td></tr>
@@ -183,13 +183,13 @@ def send_order_notification_to_farmer(order, farmer, customer):
             html_content=html_content,
         )
         api.send_transac_email(send_smtp_email)
-        print(f'[Farmora] Order notification sent to {farmer.email}')
+        print(f'[Naagali] Order notification sent to {farmer.email}')
         return True
     except ApiException as e:
-        print(f'[Farmora] Brevo API error: {e}')
+        print(f'[Naagali] Brevo API error: {e}')
         return False
     except Exception as e:
-        print(f'[Farmora] Order notification error: {e}')
+        print(f'[Naagali] Order notification error: {e}')
         return False
 
 
@@ -257,7 +257,7 @@ def send_order_status_email_to_user(order, customer, farmer, status):
           </div>
         </td></tr>
         <tr><td style="background:#f0f7f3;padding:20px;text-align:center;">
-          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Farmora · Hyderabad</p>
+          <p style="color:#7a7a7a;font-size:12px;margin:0;">© 2026 Naagali · Hyderabad</p>
         </td></tr>
       </table>
     </td></tr>
@@ -272,11 +272,11 @@ def send_order_status_email_to_user(order, customer, farmer, status):
             html_content=html_content,
         )
         api.send_transac_email(send_smtp_email)
-        print(f'[Farmora] Order status email sent to {customer.email}')
+        print(f'[Naagali] Order status email sent to {customer.email}')
         return True
     except ApiException as e:
-        print(f'[Farmora] Brevo API error: {e}')
+        print(f'[Naagali] Brevo API error: {e}')
         return False
     except Exception as e:
-        print(f'[Farmora] Order status email error: {e}')
+        print(f'[Naagali] Order status email error: {e}')
         return False
