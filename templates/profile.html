@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<style>
+  .wrap { max-width:680px; margin:3rem auto; padding:0 1.5rem; }
+  .profile-card { background:#fff; border:1.5px solid var(--parchment-dk); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-md); }
+  .profile-hero { background:linear-gradient(135deg,var(--forest),var(--forest-mid)); padding:2.5rem; text-align:center; position:relative; }
+  .profile-hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:30px; background:#fff; border-radius:30px 30px 0 0; }
+  .avatar-big { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-lt)); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:700; color:var(--forest); margin:0 auto 1rem; border:3px solid var(--gold); }
+  .profile-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:#fff; font-weight:700; }
+  .profile-role { color:rgba(255,255,255,0.7); font-size:0.82rem; text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+  .profile-body { padding:2rem; }
+  .info-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--parchment-dk); }
+  .info-row:last-child { border-bottom:none; }
+  .info-icon { width:36px; height:36px; border-radius:8px; background:var(--parchment); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .info-label { font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--ink-lt); margin-bottom:2px; }
+  .info-value { font-size:0.95rem; color:var(--ink); font-weight:500; }
+  .profile-actions { display:flex; gap:12px; margin-top:1.5rem; }
+  .btn-edit { display:inline-flex; align-items:center; gap:6px; padding:10px 24px; background:linear-gradient(135deg,var(--forest),var(--forest-mid)); color:var(--gold-lt); border-radius:6px; text-decoration:none; font-weight:600; font-size:0.88rem; }
+  .btn-edit:hover { filter:brightness(1.1); }
+</style>
+
+<div class="wrap">
+  <div class="profile-card">
+    <div class="profile-hero">
+      <div class="avatar-big">{{ user.name|slice:":1"|upper }}</div>
+      <div class="profile-name">{{ user.name }}</div>
+      <div class="profile-role">{% if user.role == 'farmer' %}🌾 Farmer{% else %}🛍️ Customer{% endif %}</div>
+    </div>
+    <div class="profile-body">
+      <div class="info-row">
+        <div class="info-icon">👤</div>
+        <div>
+          <div class="info-label">Full Name</div>
+          <div class="info-value">{{ user.name }}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📧</div>
+        <div>
+          <div class="info-label">Email</div>
+          <div class="info-value">{{ user.email }}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Mobile</div>
+          <div class="info-value">{{ user.mobile_number|default:"Not provided" }}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Address</div>
+          <div class="info-value">{{ user.address|default:"Not provided" }}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📅</div>
+        <div>
+          <div class="info-label">Member Since</div>
+          <div class="info-value">{{ user.created_at|date:"d M Y"|default:"N/A" }}</div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <a href="/edit-profile/" class="btn-edit">✏️ Edit Profile</a>
+        <a href="/logout/" style="display:inline-flex;align-items:center;gap:6px;padding:10px 24px;background:#fee2e2;color:#991b1b;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.88rem;">↩ Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

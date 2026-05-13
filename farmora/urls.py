@@ -9,6 +9,8 @@ urlpatterns = [
     path("", acc_views.register),
     path("login/", acc_views.login_view),
     path("logout/", acc_views.logout_view),
+    path("profile/", acc_views.profile_view),
+    path("edit-profile/", acc_views.edit_profile),
     path("shop/", prod_views.shop),
     path("product/<int:id>/", prod_views.product_detail),
     path("add/<int:id>/", prod_views.add_to_cart),
@@ -23,6 +25,6 @@ urlpatterns = [
     path("pending-orders/", dash_views.pending_orders),
     path("accepted-orders/", dash_views.accepted_orders),
     path("farmer-directory/", dash_views.farmer_contact_directory),
-    path('remove/<int:id>/', prod_views.remove_from_cart),
+    path("remove/<int:id>/", prod_views.remove_from_cart),
     path("", include("orders.urls")),
 ]

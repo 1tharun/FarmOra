@@ -1,171 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Naagali — {% block title %}Fresh From the Field{% endblock %}</title>
+  <title>నాగలి Naagali — {% block title %}Fresh From the Field{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --forest:      #1c3a28;
-      --forest-mid:  #2a5240;
-      --forest-lt:   #3d7a5c;
-      --sage:        #7aab8e;
-      --sage-pale:   #c8e6d4;
-      --parchment:   #f5efe0;
-      --parchment-dk:#ede3cc;
-      --gold:        #c8963c;
-      --gold-lt:     #e8b860;
-      --gold-pale:   #f5e4b8;
-      --mahogany:    #7a3b1e;
-      --cream:       #faf6ec;
-      --ink:         #1a1510;
-      --ink-mid:     #4a3f32;
-      --ink-lt:      #7a6e60;
-      --white:       #ffffff;
-      --shadow-sm:   0 2px 8px rgba(28,58,40,0.08);
-      --shadow-md:   0 4px 20px rgba(28,58,40,0.12);
-      --shadow-lg:   0 8px 40px rgba(28,58,40,0.16);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --forest:#1c3a28;--forest-mid:#2a5240;--forest-lt:#3d7a5c;
+      --sage:#7aab8e;--sage-pale:#c8e6d4;
+      --parchment:#f5efe0;--parchment-dk:#ede3cc;
+      --gold:#c8963c;--gold-lt:#e8b860;--gold-pale:#f5e4b8;
+      --mahogany:#7a3b1e;--cream:#faf6ec;
+      --ink:#1a1510;--ink-mid:#4a3f32;--ink-lt:#7a6e60;
+      --shadow-sm:0 2px 8px rgba(28,58,40,0.08);
+      --shadow-md:0 4px 20px rgba(28,58,40,0.12);
+      --shadow-lg:0 8px 40px rgba(28,58,40,0.18);
     }
-
-    body {
-      font-family: 'Jost', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,150,60,0.06) 0%, transparent 60%);
-    }
+    body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
 
     /* ── NAV ── */
-    nav {
-      background: var(--forest);
-      background-image: linear-gradient(90deg, #0f2218 0%, var(--forest) 40%, #1e4030 100%);
-      padding: 0 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 68px;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.30);
-      border-bottom: 2px solid var(--gold);
+    nav{
+      background:linear-gradient(90deg,#0f2218 0%,var(--forest) 50%,#1e4030 100%);
+      padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;
+      height:64px;position:sticky;top:0;z-index:300;
+      box-shadow:0 2px 20px rgba(0,0,0,0.3);border-bottom:2px solid var(--gold);
     }
-    .nav-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem; font-weight: 700;
-      color: var(--gold-lt);
-      text-decoration: none;
-      letter-spacing: 1px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-brand .leaf { font-size: 1.4rem; }
-    .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-links a {
-      color: rgba(255,255,255,0.72);
-      text-decoration: none;
-      padding: 7px 15px;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      transition: all 0.2s;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover { color: var(--gold-lt); border-color: rgba(200,150,60,0.3); background: rgba(200,150,60,0.08); }
-    .nav-links a.btn-logout {
-      color: #e8a080; border-color: rgba(232,160,128,0.25);
-      background: rgba(232,160,128,0.08);
-    }
-    .nav-links a.btn-logout:hover { background: var(--mahogany); color: #fff; border-color: var(--mahogany); }
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--gold-lt);text-decoration:none;letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+    .nav-brand .brand-te{font-size:1rem;color:rgba(255,255,255,0.5);}
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center; padding: 2.5rem;
-      color: var(--ink-lt); font-size: 0.82rem;
-      border-top: 1px solid var(--parchment-dk);
-      margin-top: 4rem;
-      background: var(--parchment);
-    }
-    footer strong { color: var(--forest-mid); font-family: 'Cormorant Garamond', serif; font-size: 1rem; }
+    /* Desktop nav links */
+    .nav-links{display:flex;align-items:center;gap:4px;}
+    .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;padding:6px 12px;border-radius:4px;font-size:0.82rem;font-weight:500;transition:all 0.2s;border:1px solid transparent;white-space:nowrap;}
+    .nav-links a:hover{color:var(--gold-lt);border-color:rgba(200,150,60,0.3);background:rgba(200,150,60,0.08);}
+    .nav-links a.btn-logout{color:#e8a080;border-color:rgba(232,160,128,0.2);background:rgba(232,160,128,0.06);}
+    .nav-links a.btn-logout:hover{background:var(--mahogany);color:#fff;}
 
-    /* ── SHARED FORM STYLES ── */
-    .field-label {
-      display: block; font-size: 0.72rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1px;
-      color: var(--ink-mid); margin-bottom: 6px;
-    }
-    .field-input {
-      width: 100%; padding: 12px 16px;
-      border: 1.5px solid var(--parchment-dk);
-      border-radius: 6px;
-      font-family: 'Jost', sans-serif; font-size: 0.95rem;
-      color: var(--ink); background: var(--parchment);
-      transition: all 0.2s; outline: none;
-    }
-    .field-input:focus {
-      border-color: var(--gold);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(200,150,60,0.12);
-    }
-    .field-group { margin-bottom: 1.3rem; }
+    /* Language toggle */
+    .lang-toggle{display:flex;align-items:center;background:rgba(0,0,0,0.2);border-radius:20px;padding:2px 3px;border:1px solid rgba(200,150,60,0.25);}
+    .lang-btn{padding:3px 9px;border-radius:16px;font-size:0.7rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:0.5px;}
+    .lang-btn.active{background:var(--gold);color:var(--forest);}
+    .lang-btn:not(.active){background:transparent;color:rgba(255,255,255,0.5);}
 
-    /* ── BADGES ── */
-    .badge {
-      display: inline-block; padding: 3px 11px;
-      border-radius: 3px; font-size: 0.72rem;
-      font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
-    }
-    .badge-pending  { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    .badge-accepted { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-    .badge-rejected { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-    .badge-delivered{ background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+    /* Profile dropdown */
+    .nav-profile{position:relative;}
+    .profile-trigger{display:flex;align-items:center;gap:7px;cursor:pointer;padding:5px 10px;border-radius:6px;border:1px solid rgba(200,150,60,0.25);background:rgba(200,150,60,0.06);transition:all 0.2s;}
+    .profile-trigger:hover{background:rgba(200,150,60,0.14);}
+    .profile-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-lt));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:var(--forest);flex-shrink:0;}
+    .profile-name{color:var(--gold-lt);font-size:0.8rem;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:190px;background:#fff;border-radius:10px;box-shadow:var(--shadow-lg);border:1px solid var(--parchment-dk);overflow:hidden;display:none;z-index:400;}
+    .profile-dropdown.open{display:block;}
+    .pd-head{background:var(--forest);padding:12px 14px;}
+    .pd-head .pd-name{color:var(--gold-lt);font-weight:700;font-size:0.88rem;}
+    .pd-head .pd-role{color:rgba(255,255,255,0.55);font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;}
+    .profile-dropdown a{display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--ink-mid);text-decoration:none;font-size:0.83rem;transition:background 0.15s;border-bottom:1px solid var(--parchment-dk);}
+    .profile-dropdown a:last-child{border-bottom:none;}
+    .profile-dropdown a:hover{background:var(--parchment);color:var(--forest);}
 
-    /* ── BUTTONS ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 10px 22px; border-radius: 4px;
-      font-size: 0.88rem; font-weight: 600; letter-spacing: 0.3px;
-      cursor: pointer; border: none; text-decoration: none;
-      transition: all 0.2s; font-family: 'Jost', sans-serif;
-    }
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 100%);
-      color: var(--forest); border: 1px solid var(--gold);
-    }
-    .btn-gold:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,150,60,0.3); }
-    .btn-forest { background: var(--forest); color: var(--gold-lt); border: 1px solid var(--forest-mid); }
-    .btn-forest:hover { background: var(--forest-mid); transform: translateY(-1px); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--forest-lt); color: var(--forest-mid); }
-    .btn-outline:hover { background: var(--forest); color: var(--gold-lt); }
-    .btn-danger { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-    .btn-danger:hover { background: #991b1b; color: #fff; }
-    .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+    /* Hamburger */
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:transparent;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--gold-lt);border-radius:2px;transition:all 0.3s;}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
 
-    /* ── ALERT ── */
-    .alert { padding: 12px 18px; border-radius: 6px; margin-bottom: 1.2rem; font-size: 0.9rem; }
-    .alert-error { background: #fee2e2; color: #991b1b; border-left: 4px solid #b91c1c; }
-    .alert-success { background: #d1fae5; color: #065f46; border-left: 4px solid #059669; }
-
-    /* ── TABLE ── */
-    table { width: 100%; border-collapse: collapse; }
-    th {
-      background: var(--forest); color: var(--gold-lt);
-      font-size: 0.72rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1px;
-      padding: 13px 16px; text-align: left;
+    /* Mobile drawer */
+    .mobile-drawer{
+      position:fixed;top:64px;left:0;right:0;bottom:0;
+      background:rgba(15,34,24,0.97);z-index:250;
+      display:none;flex-direction:column;padding:1.5rem;
+      overflow-y:auto;
     }
-    td { padding: 12px 16px; border-bottom: 1px solid var(--parchment-dk); font-size: 0.9rem; vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--parchment); }
+    .mobile-drawer.open{display:flex;}
+    .mobile-drawer .m-user{display:flex;align-items:center;gap:12px;padding:1rem 0;border-bottom:1px solid rgba(200,150,60,0.2);margin-bottom:1rem;}
+    .mobile-drawer .m-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-lt));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:var(--forest);}
+    .mobile-drawer .m-name{color:#fff;font-weight:600;font-size:0.95rem;}
+    .mobile-drawer .m-role{color:rgba(255,255,255,0.5);font-size:0.75rem;}
+    .mobile-drawer a{color:rgba(255,255,255,0.8);text-decoration:none;padding:13px 16px;border-radius:8px;font-size:0.95rem;font-weight:500;display:flex;align-items:center;gap:10px;transition:all 0.2s;border:1px solid transparent;margin-bottom:4px;}
+    .mobile-drawer a:hover,.mobile-drawer a:active{background:rgba(200,150,60,0.1);border-color:rgba(200,150,60,0.2);color:var(--gold-lt);}
+    .mobile-drawer a.m-logout{color:#e8a080;margin-top:auto;}
+    .mobile-drawer a.m-logout:hover{background:var(--mahogany);color:#fff;}
+    .m-lang-row{display:flex;align-items:center;gap:10px;padding:10px 16px;color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:4px;}
+    .m-lang-toggle{display:flex;align-items:center;background:rgba(0,0,0,0.3);border-radius:20px;padding:3px 4px;border:1px solid rgba(200,150,60,0.25);}
+    .m-lang-btn{padding:4px 12px;border-radius:16px;font-size:0.75rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;}
+    .m-lang-btn.active{background:var(--gold);color:var(--forest);}
+    .m-lang-btn:not(.active){background:transparent;color:rgba(255,255,255,0.5);}
 
-    /* ── DECORATIVE DIVIDER ── */
-    .ornament {
-      text-align: center; color: var(--gold); font-size: 1.1rem;
-      letter-spacing: 8px; margin: 0.5rem 0;
-      opacity: 0.6;
+    /* CHATBOT */
+    .chatbot-fab{position:fixed;bottom:20px;right:20px;z-index:500;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--forest),var(--forest-mid));border:2px solid var(--gold);box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;transition:all 0.2s;}
+    .chatbot-fab:hover,.chatbot-fab:active{transform:scale(1.1);}
+    .chatbot-window{position:fixed;bottom:86px;right:16px;z-index:500;width:min(340px, calc(100vw - 32px));height:min(480px,60vh);background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);border:1px solid var(--parchment-dk);display:none;flex-direction:column;overflow:hidden;}
+    .chatbot-window.open{display:flex;}
+    .cb-header{background:linear-gradient(135deg,var(--forest),var(--forest-mid));padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--gold);}
+    .cb-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .cb-info .cb-name{color:#fff;font-weight:700;font-size:0.88rem;}
+    .cb-info .cb-status{color:rgba(255,255,255,0.6);font-size:0.7rem;}
+    .cb-close{margin-left:auto;color:rgba(255,255,255,0.7);cursor:pointer;font-size:1.1rem;padding:4px 8px;}
+    .cb-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;}
+    .cb-msg{max-width:82%;padding:9px 13px;border-radius:12px;font-size:0.82rem;line-height:1.5;word-break:break-word;}
+    .cb-msg.bot{background:var(--parchment);color:var(--ink);border-bottom-left-radius:4px;align-self:flex-start;}
+    .cb-msg.user{background:var(--forest);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+    .cb-quick{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 8px;}
+    .cb-qbtn{padding:5px 10px;border-radius:14px;border:1.5px solid var(--forest);color:var(--forest);font-size:0.72rem;font-weight:600;cursor:pointer;background:#fff;transition:all 0.15s;}
+    .cb-qbtn:hover,.cb-qbtn:active{background:var(--forest);color:#fff;}
+    .cb-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--parchment-dk);}
+    .cb-input input{flex:1;padding:8px 12px;border:1.5px solid var(--parchment-dk);border-radius:20px;font-family:'Jost',sans-serif;font-size:0.83rem;outline:none;}
+    .cb-input input:focus{border-color:var(--gold);}
+    .cb-input button{width:34px;height:34px;border-radius:50%;background:var(--forest);border:none;color:var(--gold-lt);cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+    /* Shared styles */
+    footer{text-align:center;padding:2rem 1rem;color:var(--ink-lt);font-size:0.8rem;border-top:1px solid var(--parchment-dk);margin-top:3rem;background:var(--parchment);}
+    footer strong{color:var(--forest-mid);font-family:'Cormorant Garamond',serif;font-size:0.95rem;}
+    .field-label{display:block;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--ink-mid);margin-bottom:6px;}
+    .field-input{width:100%;padding:12px 16px;border:1.5px solid var(--parchment-dk);border-radius:6px;font-family:'Jost',sans-serif;font-size:0.95rem;color:var(--ink);background:var(--parchment);transition:all 0.2s;outline:none;}
+    .field-input:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(200,150,60,0.12);}
+    .field-group{margin-bottom:1.2rem;}
+    .badge{display:inline-block;padding:3px 10px;border-radius:3px;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;}
+    .badge-pending{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+    .badge-accepted{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+    .badge-rejected{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+    .badge-delivered{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+    .badge-out_for_delivery{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:6px;font-size:0.88rem;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all 0.2s;font-family:'Jost',sans-serif;}
+    .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--forest);border:1px solid var(--gold);}
+    .btn-gold:hover{filter:brightness(1.08);transform:translateY(-1px);}
+    .btn-forest{background:var(--forest);color:var(--gold-lt);border:1px solid var(--forest-mid);}
+    .btn-forest:hover{background:var(--forest-mid);transform:translateY(-1px);}
+    .btn-danger{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+    .btn-danger:hover{background:#991b1b;color:#fff;}
+    .btn-sm{padding:6px 14px;font-size:0.78rem;}
+    .alert{padding:12px 16px;border-radius:6px;margin-bottom:1rem;font-size:0.88rem;}
+    .alert-error{background:#fee2e2;color:#991b1b;border-left:4px solid #b91c1c;}
+    .alert-success{background:#d1fae5;color:#065f46;border-left:4px solid #059669;}
+    table{width:100%;border-collapse:collapse;}
+    th{background:var(--forest);color:var(--gold-lt);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:12px 14px;text-align:left;}
+    td{padding:12px 14px;border-bottom:1px solid var(--parchment-dk);font-size:0.88rem;vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:var(--parchment);}
+
+    /* MOBILE RESPONSIVE */
+    @media(max-width:768px){
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .chatbot-window{right:8px;left:8px;width:auto;}
+      table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
     }
   </style>
 </head>
@@ -174,29 +154,200 @@
 {% if request.session.user_id %}
 <nav>
   <a class="nav-brand" href="/">
-    <span class="leaf">🌿</span> Naagali
+    🌾 నాగలి <span class="brand-te">Naagali</span>
   </a>
+
+  <!-- Desktop links -->
   <div class="nav-links">
     {% if request.session.role == 'farmer' %}
-      <a href="/farmer-dashboard/">⊞ Dashboard</a>
-      <a href="/add-product/">＋ Add Product</a>
-      <a href="/pending-orders/">◎ Pending Orders</a>
-      <a href="/accepted-orders/">🚚 Active Orders</a>
+      <a href="/farmer-dashboard/" class="lang-link" data-en="⊞ Dashboard" data-te="⊞ డాష్‌బోర్డ్">⊞ Dashboard</a>
+      <a href="/add-product/" class="lang-link" data-en="＋ Add Product" data-te="＋ వస్తువు జోడించు">＋ Add Product</a>
+      <a href="/pending-orders/" class="lang-link" data-en="◎ Pending Orders" data-te="◎ పెండింగ్ ఆర్డర్లు">◎ Pending Orders</a>
+      <a href="/accepted-orders/" class="lang-link" data-en="🚚 Active Orders" data-te="🚚 సక్రియ ఆర్డర్లు">🚚 Active Orders</a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-te" onclick="setLang('te')">తె</button>
+      </div>
     {% else %}
       <a href="/shop/">⊛ Shop</a>
       <a href="/cart/">▣ Cart</a>
       <a href="/orders/">◈ My Orders</a>
-      <a href="/farmer-directory/">🌾 Farmer Directory</a>
+      <a href="/farmer-directory/">🌾 Farmers</a>
     {% endif %}
-    <a href="/logout/" class="btn-logout">↩ Logout</a>
+    <div class="nav-profile">
+      <div class="profile-trigger" onclick="toggleProfile()">
+        <div class="profile-avatar">{{ request.session.user_name|slice:":1"|upper }}</div>
+        <span class="profile-name">{{ request.session.user_name }}</span>
+        <span style="color:var(--gold-lt);font-size:0.65rem;">▾</span>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="pd-head">
+          <div class="pd-name">{{ request.session.user_name }}</div>
+          <div class="pd-role">{{ request.session.role }}</div>
+        </div>
+        <a href="/profile/">👤 My Profile</a>
+        <a href="/edit-profile/">✏️ Edit Profile</a>
+        <a href="/logout/" style="color:#991b1b;">↩ Logout</a>
+      </div>
+    </div>
   </div>
+
+  <!-- Hamburger -->
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="m-user">
+    <div class="m-avatar">{{ request.session.user_name|slice:":1"|upper }}</div>
+    <div>
+      <div class="m-name">{{ request.session.user_name }}</div>
+      <div class="m-role">{{ request.session.role }}</div>
+    </div>
+  </div>
+
+  {% if request.session.role == 'farmer' %}
+    <a href="/farmer-dashboard/" onclick="closeMenu()" class="m-lang-link" data-en="⊞ Dashboard" data-te="⊞ డాష్‌బోర్డ్">⊞ Dashboard</a>
+    <a href="/add-product/" onclick="closeMenu()" class="m-lang-link" data-en="＋ Add Product" data-te="＋ వస్తువు జోడించు">＋ Add Product</a>
+    <a href="/pending-orders/" onclick="closeMenu()" class="m-lang-link" data-en="◎ Pending Orders" data-te="◎ పెండింగ్ ఆర్డర్లు">◎ Pending Orders</a>
+    <a href="/accepted-orders/" onclick="closeMenu()" class="m-lang-link" data-en="🚚 Active Orders" data-te="🚚 సక్రియ ఆర్డర్లు">🚚 Active Orders</a>
+    <div class="m-lang-row">
+      🌐 Language:
+      <div class="m-lang-toggle">
+        <button class="m-lang-btn active" id="m-btn-en" onclick="setLang('en')">EN</button>
+        <button class="m-lang-btn" id="m-btn-te" onclick="setLang('te')">తె</button>
+      </div>
+    </div>
+  {% else %}
+    <a href="/shop/" onclick="closeMenu()">⊛ Shop</a>
+    <a href="/cart/" onclick="closeMenu()">▣ Cart</a>
+    <a href="/orders/" onclick="closeMenu()">◈ My Orders</a>
+    <a href="/farmer-directory/" onclick="closeMenu()">🌾 Farmer Directory</a>
+  {% endif %}
+
+  <a href="/profile/" onclick="closeMenu()">👤 My Profile</a>
+  <a href="/edit-profile/" onclick="closeMenu()">✏️ Edit Profile</a>
+  <a href="/logout/" class="m-logout">↩ Logout</a>
+</div>
 {% endif %}
 
 {% block content %}{% endblock %}
 
 <footer>
-  <strong>Naagali</strong> &nbsp;·&nbsp; Connecting Farmers &amp; Communities &nbsp;·&nbsp; Fresh, Local, Direct
+  <strong>నాగలి · Naagali</strong> &nbsp;·&nbsp; Connecting Farmers &amp; Communities &nbsp;·&nbsp; Fresh, Local, Direct
 </footer>
+
+{% if request.session.role == 'farmer' %}
+<!-- CHATBOT -->
+<div class="chatbot-fab" onclick="toggleChat()" title="Farming Assistant">🤖</div>
+<div class="chatbot-window" id="chatbotWindow">
+  <div class="cb-header">
+    <div class="cb-avatar">🌾</div>
+    <div class="cb-info">
+      <div class="cb-name">Naagali Assistant</div>
+      <div class="cb-status">● Online — here to help</div>
+    </div>
+    <div class="cb-close" onclick="toggleChat()">✕</div>
+  </div>
+  <div class="cb-messages" id="cbMessages">
+    <div class="cb-msg bot">👋 Hello! I'm your Naagali farming assistant. How can I help you today?</div>
+  </div>
+  <div class="cb-quick" id="cbQuick">
+    <button class="cb-qbtn" onclick="askBot('How to add a product?')">Add Product</button>
+    <button class="cb-qbtn" onclick="askBot('How to manage orders?')">Orders</button>
+    <button class="cb-qbtn" onclick="askBot('Pricing tips')">Pricing</button>
+    <button class="cb-qbtn" onclick="askBot('Seasonal crops')">Crops</button>
+    <button class="cb-qbtn" onclick="askBot('Weather tips')">Weather</button>
+  </div>
+  <div class="cb-input">
+    <input type="text" id="cbInput" placeholder="Ask anything..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
+{% endif %}
+
+<script>
+// Hamburger menu
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileDrawer').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('mobileDrawer').classList.contains('open') ? 'hidden' : '';
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Profile dropdown
+function toggleProfile(){document.getElementById('profileDropdown').classList.toggle('open');}
+document.addEventListener('click',function(e){if(!e.target.closest('.nav-profile'))document.getElementById('profileDropdown')?.classList.remove('open');});
+
+// Chatbot
+function toggleChat(){document.getElementById('chatbotWindow').classList.toggle('open');}
+
+// Language toggle
+function setLang(lang){
+  localStorage.setItem('naagali_lang',lang);
+  ['btn-en','btn-te','m-btn-en','m-btn-te'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('active', (id.endsWith('en') && lang==='en') || (id.endsWith('te') && lang==='te'));
+  });
+  document.querySelectorAll('.lang-link,.m-lang-link').forEach(el=>{
+    el.textContent = lang==='te' ? el.dataset.te : el.dataset.en;
+  });
+}
+const savedLang=localStorage.getItem('naagali_lang');
+if(savedLang && (document.getElementById('btn-en')||document.getElementById('m-btn-en'))) setLang(savedLang);
+
+// Chatbot knowledge base
+const KB={
+  'add product':`📦 Adding a Product:\n1. Click "Add Product" in menu\n2. Enter product name (English + Telugu)\n3. Enter price per kg in ₹\n4. Paste an image URL\n5. Click Save!\n\n💡 Use a clear image for better sales.`,
+  'manage orders':`📋 Managing Orders:\n• Go to "Pending Orders" to see new orders\n• Click ✅ Accept or ❌ Reject\n• After accepting → "Active Orders"\n• Mark "Out for Delivery" when dispatching\n• Mark "Delivered" when done\n\nCustomers get email notifications automatically!`,
+  'pricing':`💰 Smart Pricing Tips:\n• Check local mandi rates daily\n• Price 10-15% below supermarkets\n• Offer bulk discounts for 5kg+ orders\n• Seasonal produce → price higher in off-season\n• Fresh harvest → charge premium`,
+  'seasonal':`🌱 Seasonal Crops (Telugu region):\n\n☀️ Summer (Mar-Jun):\nWatermelon, Mango, Brinjal, Okra\n\n🌧️ Monsoon (Jul-Sep):\nRice, Corn, Gourds, Spinach\n\n🍂 Winter (Oct-Feb):\nTomato, Carrot, Cauliflower, Peas`,
+  'weather':`🌦️ Weather Farming Tips:\n• Water crops early morning (6-8 AM)\n• Avoid pesticides before rain\n• Harvest before heavy rain\n• Use shade nets in peak summer\n• Store produce in cool dry place`,
+  'edit product':`✏️ Editing a Product:\n1. Go to Farmer Dashboard\n2. Find the product\n3. Click "Edit" button\n4. Update name, price or image\n5. Click Save!`,
+  'delete':`🗑️ Deleting a Product:\n1. Go to Farmer Dashboard\n2. Find the product\n3. Click "Delete"\n4. Confirm deletion\n\n⚠️ This cannot be undone!`,
+  'contact customer':`📞 Contacting Customers:\nWhen you get an order, the email includes:\n• Customer name & phone\n• Delivery address\n• Email address\n\nYou can call or WhatsApp them directly!`,
+  'earnings':`💵 Your Earnings:\nGo to Farmer Dashboard to see:\n• Total orders received\n• Total earnings\n• Pending & active orders\n\nAll accepted orders count towards earnings!`,
+  'profile':`👤 Your Profile:\nClick your name (top right) to:\n• View your profile\n• Edit your details\n• Update mobile & address`,
+};
+function getBotReply(msg){
+  const low=msg.toLowerCase();
+  for(const[k,v] of Object.entries(KB)){if(low.includes(k))return v;}
+  if(low.includes('add')||low.includes('product')||low.includes('list'))return KB['add product'];
+  if(low.includes('order')||low.includes('accept')||low.includes('reject'))return KB['manage orders'];
+  if(low.includes('price')||low.includes('cost')||low.includes('rate'))return KB['pricing'];
+  if(low.includes('season')||low.includes('crop')||low.includes('grow'))return KB['seasonal'];
+  if(low.includes('weather')||low.includes('rain')||low.includes('water'))return KB['weather'];
+  if(low.includes('edit')||low.includes('update')||low.includes('change'))return KB['edit product'];
+  if(low.includes('delete')||low.includes('remove'))return KB['delete'];
+  if(low.includes('contact')||low.includes('customer')||low.includes('call'))return KB['contact customer'];
+  if(low.includes('earn')||low.includes('money')||low.includes('income'))return KB['earnings'];
+  if(low.includes('profile')||low.includes('account'))return KB['profile'];
+  return `🤔 I'm not sure about that. Try:\n• "How to add a product?"\n• "How to manage orders?"\n• "Pricing tips"\n• "Seasonal crops"\n• "Weather tips"`;
+}
+function addMsg(text,sender){
+  const msgs=document.getElementById('cbMessages');
+  const div=document.createElement('div');
+  div.className=`cb-msg ${sender}`;
+  div.style.whiteSpace='pre-line';
+  div.textContent=text;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function askBot(q){addMsg(q,'user');setTimeout(()=>addMsg(getBotReply(q),'bot'),350);}
+function sendChat(){
+  const inp=document.getElementById('cbInput');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  addMsg(msg,'user');
+  setTimeout(()=>addMsg(getBotReply(msg),'bot'),350);
+}
+</script>
 </body>
 </html>
